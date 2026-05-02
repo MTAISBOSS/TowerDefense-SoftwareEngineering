@@ -1,0 +1,112 @@
+name: Create GitHub Issues from tasks.md
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create issues from tasks.md
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const filePath = 'tasks.md';
+
+            if (!fs.existsSync(filePath)) {
+              core.setFailed('tasks.md file not found');
+              return;
+            }
+
+            const content = fs.readFileSync(filePath, 'utf8');
+            const lines = content.split('\n');
+
+            let currentSection = '';
+            const tasks = [];
+
+            for (let line of lines) {
+              line = line.trim();
+
+              if (line.startsWith('## ')) {
+                currentSection = line.replace(/^## /, '').trim();
+                continue;
+              }
+
+              if (line.startsWith('- ')) {
+                let taskText = line.replace(/^- /, '').trim();
+
+                if (taskText.length === 0) {
+                  continue;
+                }
+
+                const assignees = [];
+                const mentionRegex = /@([a-zA-Z0-9-]+)/g;
+                let match;
+
+                while ((match = mentionRegex.exec(taskText)) !== null) {
+                  assignees.push(match[1]);
+                }
+
+                taskText = taskText.replace(/@[a-zA-Z0-9-]+/g, '').trim();
+
+                const title = currentSection
+                  ? `${currentSection} | ${taskText}`
+                  : taskText;
+
+                tasks.push({
+                  title,
+                  section: currentSection,
+                  assignees
+                });
+              }
+            }
+
+            if (tasks.length === 0) {
+              core.info('No tasks found in tasks.md');
+              return;
+            }
+
+            for (const task of tasks) {
+              core.info(`Creating issue: ${task.title}`);
+
+              const issue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: task.title,
+                body: [
+                  'Created automatically from tasks.md',
+                  '',
+                  `Section: ${task.section || 'None'}`,
+                  task.assignees.length > 0
+                    ? `Requested assignees: ${task.assignees.map(a => '@' + a).join(', ')}`
+                    : 'Requested assignees: None'
+                ].join('\n')
+              });
+
+              if (task.assignees.length > 0) {
+                try {
+                  await github.rest.issues.addAssignees({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.data.number,
+                    assignees: task.assignees
+                  });
+
+                  core.info(`Assigned issue to: ${task.assignees.join(', ')}`);
+                } catch (error) {
+                  core.warning(
+                    `Could not assign issue "${task.title}" to ${task.assignees.join(', ')}. Reason: ${error.message}`
+                  );
+                }
+              }
+            }
