@@ -37,26 +37,36 @@ jobs:
             for (let line of lines) {
               line = line.trim();
 
+              // Section detection
               if (line.startsWith('## ')) {
                 currentSection = line.replace(/^## /, '').trim();
                 continue;
               }
 
+              // Skip completed tasks
+              if (line.startsWith('- [x]')) continue;
+
               if (line.startsWith('- ')) {
-                let taskText = line.replace(/^- /, '').trim();
+                let taskText = line;
 
-                if (taskText.length === 0) {
-                  continue;
-                }
+                // Normalize checkbox
+                taskText = taskText.replace(/^- \[[ xX]\] /, '');
+                taskText = taskText.replace(/^- /, '').trim();
 
-                const assignees = [];
+                if (!taskText) continue;
+
+                // Extract assignees
                 const mentionRegex = /@([a-zA-Z0-9-]+)/g;
+                let assignees = [];
                 let match;
 
                 while ((match = mentionRegex.exec(taskText)) !== null) {
                   assignees.push(match[1]);
                 }
 
+                assignees = [...new Set(assignees)];
+
+                // Remove mentions from title
                 taskText = taskText.replace(/@[a-zA-Z0-9-]+/g, '').trim();
 
                 const title = currentSection
@@ -76,7 +86,57 @@ jobs:
               return;
             }
 
+            // Get existing issues
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100
+            });
+
+            const existingTitles = new Set(
+              existingIssues.data.map(issue => issue.title)
+            );
+
+            // Get existing labels
+            const existingLabelsResponse = await github.rest.issues.listLabelsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+
+            const existingLabels = new Set(
+              existingLabelsResponse.data.map(label => label.name.toLowerCase())
+            );
+
+            // Helper to normalize label names
+            const normalizeLabel = (name) => name.trim();
+
             for (const task of tasks) {
+              if (existingTitles.has(task.title)) {
+                core.info(`Skipping existing issue: ${task.title}`);
+                continue;
+              }
+
+              const labelName = task.section ? normalizeLabel(task.section) : null;
+
+              // Create label if missing
+              if (labelName && !existingLabels.has(labelName.toLowerCase())) {
+                try {
+                  await github.rest.issues.createLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: labelName,
+                    color: 'ededed', // neutral gray
+                  });
+
+                  existingLabels.add(labelName.toLowerCase());
+                  core.info(`Created label: ${labelName}`);
+                } catch (error) {
+                  core.warning(`Failed to create label "${labelName}": ${error.message}`);
+                }
+              }
+
               core.info(`Creating issue: ${task.title}`);
 
               const issue = await github.rest.issues.create({
@@ -86,11 +146,10 @@ jobs:
                 body: [
                   'Created automatically from tasks.md',
                   '',
-                  `Section: ${task.section || 'None'}`,
-                  task.assignees.length > 0
-                    ? `Requested assignees: ${task.assignees.map(a => '@' + a).join(', ')}`
-                    : 'Requested assignees: None'
-                ].join('\n')
+                  `## Section`,
+                  task.section || 'None'
+                ].join('\n'),
+                labels: labelName ? [labelName] : []
               });
 
               if (task.assignees.length > 0) {
@@ -102,10 +161,10 @@ jobs:
                     assignees: task.assignees
                   });
 
-                  core.info(`Assigned issue to: ${task.assignees.join(', ')}`);
+                  core.info(`Assigned to: ${task.assignees.join(', ')}`);
                 } catch (error) {
                   core.warning(
-                    `Could not assign issue "${task.title}" to ${task.assignees.join(', ')}. Reason: ${error.message}`
+                    `Failed to assign "${task.title}" → ${task.assignees.join(', ')}: ${error.message}`
                   );
                 }
               }
