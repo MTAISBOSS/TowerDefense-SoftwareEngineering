@@ -6,7 +6,7 @@ namespace AttackUpgrades
     {
         private readonly float _extraDamage;
 
-        public DamageUpgrade(IAttackStrategy wrapped,float extraDamage) : base(wrapped)
+        public DamageUpgrade(IAttackStrategy wrapped, float extraDamage) : base(wrapped)
         {
             _extraDamage = extraDamage;
         }
