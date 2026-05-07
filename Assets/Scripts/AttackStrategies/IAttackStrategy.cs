@@ -1,4 +1,5 @@
-﻿using Unit;
+﻿using Entity;
+using Unit;
 using UnityEngine;
 
 namespace AttackStrategies
