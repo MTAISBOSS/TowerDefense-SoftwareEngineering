@@ -7,27 +7,39 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        private EventBinding<GameResultEvent> gameResultEvent;
-        private GameResultEvent _result;
+        private EventBinding<GameEndedEvent> gameEndedEvent;
+        private EventBinding<GameStartedEvent> gameStartedEvent;
+        private GameEndedEvent endedResult;
+        private bool isGameRunning;
 
         private void OnEnable()
         {
-            gameResultEvent = new EventBinding<GameResultEvent>(HandleGameOver);
-            EventBus<GameResultEvent>.Register(gameResultEvent);
+            gameEndedEvent = new EventBinding<GameEndedEvent>(HandleGameOver);
+            gameStartedEvent = new EventBinding<GameStartedEvent>(StartGame);
+            
+            EventBus<GameEndedEvent>.Register(gameEndedEvent);
+            EventBus<GameStartedEvent>.Register(gameStartedEvent);
         }
         private void OnDisable()
         {
-            EventBus<GameResultEvent>.Unregister(gameResultEvent);
+            EventBus<GameEndedEvent>.Unregister(gameEndedEvent);
+            EventBus<GameStartedEvent>.Unregister(gameStartedEvent);
         }
-        private void HandleGameOver(GameResultEvent result)
+
+        private void StartGame()
         {
-            _result = result;
-            Invoke($"Handle{result.state.ToString()}",0);
+            isGameRunning = true;
+        }
+        private void HandleGameOver(GameEndedEvent endedResult)
+        {
+            this.endedResult = endedResult;
+            isGameRunning = false;
+            Invoke($"Handle{endedResult.state.ToString()}",0);
         }
 
         void HandleVictory()
         {
-            Utilities.Logger.Log($"Victory {_result}");
+            Utilities.Logger.Log($"Victory {endedResult}");
         }
         void HandleDefeated()
         {
