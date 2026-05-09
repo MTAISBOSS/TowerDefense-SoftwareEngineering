@@ -1,15 +1,16 @@
-﻿using Unity.Burst;
+﻿using Entity.Movement.Area;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace Entity
+namespace Entity.Movement
 {
     [BurstCompile]
     public struct EntityMovement : IJobParallelFor
     {
-        public NativeArray<Vector3> CurrentPositions;
-        public NativeArray<Vector3> TargetPositions;
+        public NativeArray<Vector2> CurrentPositions;
+        public NativeArray<Vector2> TargetPositions;
         public NativeArray<float> StartTimes;
         
         public float DeltaTime;
@@ -21,6 +22,8 @@ namespace Entity
             if(CurrentTime < StartTimes[index]) return;
             var current = CurrentPositions[index];
             var target = TargetPositions[index];
+            if(target ==  UnInitializedVector2.Value) return;
+            
             var newPosition = Vector2.MoveTowards(current, target, Speed * DeltaTime);
             CurrentPositions[index] = newPosition;
         }

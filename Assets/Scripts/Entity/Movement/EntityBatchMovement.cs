@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Entity.Movement.Area;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace Entity
+namespace Entity.Movement
 {
     public class EntityBatchMovement : MonoBehaviour
     {
@@ -12,18 +13,20 @@ namespace Entity
         [SerializeField] private float delayBetweenEntities;
         [SerializeField] private float reachDistance = 0.1f;
 
-        private NativeArray<Vector3> currentPositions;
-        private NativeArray<Vector3> targetPositions;
+        private NativeArray<Vector2> currentPositions;
+        private NativeArray<Vector2> targetPositions;
         private NativeArray<float> startTimes;
-        
+
         private int[] wayPointIndices;
         private List<Transform> entityTransforms;
         private int entityCount;
+        private JobBatchSize batchSize;
 
         public void Setup(List<Transform> transforms)
         {
             entityTransforms = transforms;
             entityCount = entityTransforms.Count;
+            batchSize = new JobBatchSize(entityCount);
             InitializeArrays();
         }
 
@@ -54,16 +57,16 @@ namespace Entity
 
         private void InitializeArrays()
         {
-            currentPositions = new NativeArray<Vector3>(entityCount, Allocator.Persistent);
-            targetPositions = new NativeArray<Vector3>(entityCount, Allocator.Persistent);
+            currentPositions = new NativeArray<Vector2>(entityCount, Allocator.Persistent);
+            targetPositions = new NativeArray<Vector2>(entityCount, Allocator.Persistent);
             startTimes = new NativeArray<float>(entityCount, Allocator.Persistent);
-            
+
             wayPointIndices = new int[entityCount];
             for (int i = 0; i < entityCount; i++)
             {
                 currentPositions[i] = entityTransforms[i].position;
                 targetPositions[i] = movementArea.GetPoint(0);
-                startTimes[i] =  i * delayBetweenEntities;
+                startTimes[i] = i * delayBetweenEntities;
                 wayPointIndices[i] = 0;
             }
         }
@@ -79,7 +82,7 @@ namespace Entity
                 CurrentTime = Time.time,
                 Speed = speed
             };
-            var handle = job.Schedule(currentPositions.Length, 64);
+            var handle = job.Schedule(currentPositions.Length, batchSize.GetOptimalBatchSize());
             handle.Complete();
         }
 
@@ -99,8 +102,7 @@ namespace Entity
                 if (Vector2.Distance(entityTransforms[i].position, targetPositions[i]) <= reachDistance)
                 {
                     wayPointIndices[i]++;
-                    var nextIndex = wayPointIndices[i] % movementArea.Count;
-                    targetPositions[i] = movementArea.GetPoint(nextIndex);
+                    targetPositions[i] = movementArea.GetPoint(wayPointIndices[i]);
                 }
             }
         }
