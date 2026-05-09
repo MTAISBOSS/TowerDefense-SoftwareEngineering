@@ -3,8 +3,8 @@
     public enum DefenseNodeType : byte
     {
         None,
-        Rapid,
-        Rocket,
+        Arrow,
+        FireOrb,
         Laser
     }
 }

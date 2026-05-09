@@ -2,7 +2,7 @@
 
 namespace Events
 {
-    public struct GameResultEvent : IEvent
+    public struct GameEndedEvent : IEvent
     {
         public int totalTowers;
         public int remainingMoney;

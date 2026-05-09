@@ -1,36 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using Events; // Assuming BuildNodeEvent is in here
+using Events;
+using EventSystem;
 using UnityEngine;
 
 namespace Unit
 {
     public class BuildNodeRegistry : MonoBehaviour
     {
-        public event Action<Vector2> OnDeactiveMenu;
-        public event Action<Vector2> OnActiveMenu;
-
         private List<BuildNode> _nodes = new List<BuildNode>();
         private BuildNode _currentNode;
-
-        private void OnEnable()
-        {
-            BuildNodeEvent.OnBuildNodeCreated += RegisterNode;
-            BuildNodeEvent.OnBuildNodeDestroyed += UnregisterNode;
-        }
-
-        private void OnDisable()
-        {
-            BuildNodeEvent.OnBuildNodeCreated -= RegisterNode;
-            BuildNodeEvent.OnBuildNodeDestroyed -= UnregisterNode;
-        }
 
         private void RegisterNode(BuildNode node)
         {
             if (!_nodes.Contains(node))
             {
                 _nodes.Add(node);
-                node.OnSelected += HandleNodeSelection;
             }
         }
 
@@ -38,13 +23,12 @@ namespace Unit
         {
             if (_nodes.Contains(node))
             {
-                node.OnSelected -= HandleNodeSelection;
                 _nodes.Remove(node);
 
                 if (_currentNode == node)
                 {
                     _currentNode = null;
-                    OnDeactiveMenu?.Invoke(node.transform.position);
+                    EventBus<TowerDeselectedEvent>.Raise(new TowerDeselectedEvent());
                 }
             }
         }
@@ -55,7 +39,8 @@ namespace Unit
             {
                 _currentNode.Deselect();
                 _currentNode = null;
-                OnDeactiveMenu?.Invoke(selectedNode.transform.position);
+                EventBus<TowerDeselectedEvent>.Raise(new TowerDeselectedEvent());
+
                 return;
             }
             
@@ -66,7 +51,8 @@ namespace Unit
             
             _currentNode = selectedNode;
             _currentNode.Select();
-            OnActiveMenu?.Invoke(_currentNode.transform.position);
+            EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(){node = selectedNode});
+
         }
 
         public void PlaceNode(DefenseNodeType nodeType)
@@ -75,7 +61,8 @@ namespace Unit
             {
                 _currentNode.PlaceNode(nodeType);
 
-                OnDeactiveMenu?.Invoke(_currentNode.transform.position);
+                EventBus<TowerDeselectedEvent>.Raise(new TowerDeselectedEvent());
+
                 _currentNode = null;
             }
         }
