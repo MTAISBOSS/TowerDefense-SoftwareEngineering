@@ -1,4 +1,5 @@
-﻿using Unit;
+﻿using Health;
+using Unit;
 using UnityEngine;
 
 namespace AttackStrategies
@@ -10,7 +11,7 @@ namespace AttackStrategies
         public float Damage { get; private set; } = 5;
         public float FireRate { get; private set; } = 0.1f;
         
-        public void Attack(Enemy target)
+        public void Attack(IDamage target)
         {
             target.TakeDamage(Damage);
         }
