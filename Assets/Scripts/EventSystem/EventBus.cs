@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Utilities;
 
 namespace EventSystem
 {
-    public class EventBus<T> where T: IEvent
+    public class EventBus<T> where T : IEvent
     {
         private static readonly HashSet<IEventBinding<T>> Bindings = new HashSet<IEventBinding<T>>();
 
@@ -18,9 +20,11 @@ namespace EventSystem
                 binding.OnEvent.Invoke(@event);
             }
         }
-    }
 
-    public interface IEvent
-    {
+        static void Clear()
+        {
+            Logger.Log("Clearing {typeof(T).Name}");
+            Bindings.Clear();
+        }
     }
 }
