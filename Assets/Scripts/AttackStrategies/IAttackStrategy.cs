@@ -1,7 +1,4 @@
-﻿using Entity;
-using Unit;
-using UnityEngine;
-using Enemy = Unit.Enemy;
+﻿using Health;
 
 namespace AttackStrategies
 {
@@ -10,7 +7,7 @@ namespace AttackStrategies
         float Damage { get; }
         float FireRate { get; }
 
-        void Attack(Enemy target);
+        void Attack(IDamage target);
     }
 }
 

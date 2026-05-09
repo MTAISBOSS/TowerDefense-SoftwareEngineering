@@ -1,5 +1,5 @@
 ﻿using AttackStrategies;
-using Unit;
+using Health;
 
 namespace AttackUpgrades
 {
@@ -13,7 +13,7 @@ namespace AttackUpgrades
         {
             Wrapped = wrapped;
         }
-        public virtual void Attack(Unit.Enemy target)
+        public virtual void Attack(IDamage target)
         {
             Wrapped.Attack(target);
         }
