@@ -2,7 +2,7 @@
 
 namespace DefenseNodes
 {
-    public class RocketLauncherNode : DefenseNode,IUpgradable
+    public class ArrowLauncherNode : DefenseNode,IUpgradable
     {
         public void Upgrade()
         {
