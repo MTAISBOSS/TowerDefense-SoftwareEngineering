@@ -1,6 +1,7 @@
 ﻿using Entity;
 using Unit;
 using UnityEngine;
+using Enemy = Unit.Enemy;
 
 namespace AttackStrategies
 {

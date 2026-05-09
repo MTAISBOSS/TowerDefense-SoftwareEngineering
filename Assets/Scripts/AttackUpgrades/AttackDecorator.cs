@@ -13,7 +13,7 @@ namespace AttackUpgrades
         {
             Wrapped = wrapped;
         }
-        public virtual void Attack(Entity.Enemy target)
+        public virtual void Attack(Unit.Enemy target)
         {
             Wrapped.Attack(target);
         }
