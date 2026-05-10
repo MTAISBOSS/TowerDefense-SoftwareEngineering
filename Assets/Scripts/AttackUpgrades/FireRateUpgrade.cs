@@ -6,7 +6,7 @@ namespace AttackUpgrades
     {
         private readonly float extraFireRate;
 
-        public FireRateUpgrade(IAttackStrategy wrapped,float extraFireRate) : base(wrapped)
+        public FireRateUpgrade(IAttackStrategy wrapped, float extraFireRate) : base(wrapped)
         {
             this.extraFireRate = extraFireRate;
         }
