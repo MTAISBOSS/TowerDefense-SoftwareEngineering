@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Entity.Movement
 {
     [BurstCompile]
-    public struct EntityMovement : IJobParallelFor
+    public struct EntityMovementJob : IJobParallelFor
     {
         public NativeArray<Vector2> CurrentPositions;
         public NativeArray<Vector2> TargetPositions;

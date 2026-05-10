@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Entity.Movement.Area
 {
-    public class WayPointArea : MovementArea
+    public class WayPointArea : MonoBehaviour
     {
         [SerializeField] private bool isLoop = true;
         private readonly List<Vector3> _wayPoints = new();
@@ -32,17 +32,16 @@ namespace Entity.Movement.Area
         private void Awake()
         {
             SetupPoints();
-            Count = _wayPoints.Count;
         }
 
-        public override Vector2 GetPoint(int index)
+        public Vector2 GetPoint(int index)
         {
-            if (!isLoop && index == Count)
+            if (!isLoop && index == _wayPoints.Count)
             {
                 return UnInitializedVector2.Value;
             }
             
-            var point = _wayPoints[index % Count];
+            var point = _wayPoints[index % _wayPoints.Count];
             return point;
         }
 

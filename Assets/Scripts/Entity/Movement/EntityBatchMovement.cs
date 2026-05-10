@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entity.Movement.Area;
+using Flyweight;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Entity.Movement
 {
     public class EntityBatchMovement : MonoBehaviour
     {
-        [SerializeField] private MovementArea movementArea;
+        [SerializeField] private WayPointArea movementArea;
         [SerializeField] private float speed;
         [SerializeField] private float delayBetweenEntities;
         [SerializeField] private float reachDistance = 0.1f;
@@ -18,15 +19,15 @@ namespace Entity.Movement
         private NativeArray<float> startTimes;
 
         private int[] wayPointIndices;
+        private List<Flyweight.Flyweight> flyweightEntities;
         private List<Transform> entityTransforms;
         private int entityCount;
-        private JobBatchSize batchSize;
 
-        public void Setup(List<Transform> transforms)
+        public void Setup(List<Transform> transforms, List<Flyweight.Flyweight> entities)
         {
             entityTransforms = transforms;
             entityCount = entityTransforms.Count;
-            batchSize = new JobBatchSize(entityCount);
+            flyweightEntities = entities;
             InitializeArrays();
         }
 
@@ -73,7 +74,7 @@ namespace Entity.Movement
 
         private void DoMovementJob()
         {
-            var job = new EntityMovement()
+            var job = new EntityMovementJob()
             {
                 CurrentPositions = currentPositions,
                 TargetPositions = targetPositions,
@@ -82,7 +83,7 @@ namespace Entity.Movement
                 CurrentTime = Time.time,
                 Speed = speed
             };
-            var handle = job.Schedule(currentPositions.Length, batchSize.GetOptimalBatchSize());
+            var handle = job.Schedule(currentPositions.Length, 64);
             handle.Complete();
         }
 
@@ -97,14 +98,39 @@ namespace Entity.Movement
 
         private void CheckWayPointReached()
         {
+            float reachDistanceSqr = reachDistance * reachDistance;
+
             for (int i = 0; i < entityCount; i++)
             {
-                if (Vector2.Distance(entityTransforms[i].position, targetPositions[i]) <= reachDistance)
-                {
-                    wayPointIndices[i]++;
-                    targetPositions[i] = movementArea.GetPoint(wayPointIndices[i]);
-                }
+                if (!HasReachedTarget(i, reachDistanceSqr))
+                    continue;
+
+                AdvanceToNextWaypoint(i);
             }
         }
+
+        private bool HasReachedTarget(int index, float reachDistanceSqr)
+        {
+            Vector2 currentPosition = entityTransforms[index].position;
+            Vector2 targetPosition = targetPositions[index];
+
+            return (currentPosition - targetPosition).sqrMagnitude <= reachDistanceSqr;
+        }
+
+        private void AdvanceToNextWaypoint(int index)
+        {
+            wayPointIndices[index]++;
+
+            Vector2 nextPoint = movementArea.GetPoint(wayPointIndices[index]);
+
+            if (nextPoint == UnInitializedVector2.Value)
+            {
+                FlyweightFactory.ReturnToPool(flyweightEntities[index]);
+                return;
+            }
+
+            targetPositions[index] = nextPoint;
+        }
+
     }
 }

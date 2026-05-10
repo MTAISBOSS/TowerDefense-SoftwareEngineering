@@ -2168,10 +2168,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 526510272}
-  - component: {fileID: 526510271}
+  - component: {fileID: 526510273}
   - component: {fileID: 526510270}
   m_Layer: 0
-  m_Name: EnemySpawner
+  m_Name: MovingEnemySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2193,20 +2193,6 @@ MonoBehaviour:
   speed: 1.2
   delayBetweenEntities: 1
   reachDistance: 0.01
---- !u!114 &526510271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 526510269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 978aa2ee3a864ae8b8348bb5f634fbba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  count: 50
-  entityPrefab: {fileID: 493788061777314484, guid: ab8cdf4b68d927d489d850ad6ff70c08, type: 3}
 --- !u!4 &526510272
 Transform:
   m_ObjectHideFlags: 0
@@ -2222,6 +2208,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &526510273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526510269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c6ff2aa507f4ffa80d4c0143f3983e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnAmount: 20
+  settings: {fileID: 11400000, guid: 6fad1c1669ac15741a77ddb74003e6e6, type: 2}
 --- !u!1 &540882031
 GameObject:
   m_ObjectHideFlags: 0
