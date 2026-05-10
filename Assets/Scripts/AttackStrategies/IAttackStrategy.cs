@@ -1,6 +1,4 @@
 ﻿using Health;
-using Unit;
-using UnityEngine;
 
 namespace AttackStrategies
 {
