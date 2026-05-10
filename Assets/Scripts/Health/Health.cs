@@ -3,23 +3,17 @@ using UnityEngine;
 
 namespace Health
 {
-    public class Health : MonoBehaviour
+    public class Health : MonoBehaviour , IDamage
     {
         [Header("Health Settings")]
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float currentHealth = 100f;
 
         public event Action<float, float> OnHealthChanged;
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
+        
         public void Initialize()
         {
             currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
             NotifyHealthChanged();
         }
 
@@ -32,17 +26,6 @@ namespace Health
 
             NotifyHealthChanged();
         }
-
-        public void Heal(float amount)
-        {
-            if (amount <= 0f)
-                return;
-
-            currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
-
-            NotifyHealthChanged();
-        }
-
         public void SetHealth(float value)
         {
             currentHealth = Mathf.Clamp(value, 0f, maxHealth);
