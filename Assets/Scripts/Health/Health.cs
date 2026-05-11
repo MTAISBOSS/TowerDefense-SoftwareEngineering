@@ -10,12 +10,6 @@ namespace Health
         [SerializeField] private float currentHealth = 100f;
 
         public event Action<float, float> OnHealthChanged;
-        
-        public void Initialize()
-        {
-            currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-            NotifyHealthChanged();
-        }
 
         public void TakeDamage(float amount)
         {
@@ -26,14 +20,7 @@ namespace Health
 
             NotifyHealthChanged();
         }
-        public void SetHealth(float value)
-        {
-            currentHealth = Mathf.Clamp(value, 0f, maxHealth);
-
-            NotifyHealthChanged();
-        }
-
-        public void SetMaxHealth(float value)
+        public void ResetHealth(float value)
         {
             maxHealth = Mathf.Max(1f, value);
 

@@ -34,7 +34,7 @@ namespace Entity
                 flyweights.Add(currentFlyweight);
             }
 
-            _entityBatchMovement.Setup(spawnedTransforms, flyweights);
+            //_entityBatchMovement.Setup(spawnedTransforms, flyweights);
         }
     }
 }

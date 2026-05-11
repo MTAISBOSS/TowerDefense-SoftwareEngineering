@@ -46,7 +46,7 @@ namespace WaveSystem
             }
 
             await UniTask.WhenAll(tasks);
-
+            await UniTask.Delay((int)waves[waveIndex].waveCoolDown * 1000);
             ValidateNextWave();
         }
 
@@ -68,7 +68,9 @@ namespace WaveSystem
 
         private async UniTask SpawnWithCooldown(SubWaveConfig subWaveConfig)
         {
-            while (true)
+            for (int currentSubWaveIndex = 0;
+                 currentSubWaveIndex < subWaveConfig.totalNumberOfEntities;
+                 currentSubWaveIndex++)
             {
                 FlyweightFactory.Spawn(subWaveConfig.setting);
                 await UniTask.Delay(1000 * (int)subWaveConfig.spawnCooldown);

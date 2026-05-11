@@ -18,6 +18,7 @@ namespace EventSystem
             {
                 binding.OnEventNoArgs.Invoke();
                 binding.OnEvent.Invoke(@event);
+                Logger.Log($"Raised {binding}");
             }
         }
 

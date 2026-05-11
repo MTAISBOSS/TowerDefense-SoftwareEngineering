@@ -3,6 +3,8 @@
     public enum FlyweightType
     {
         Projectile,
-        Enemy
+        FastEnemy,
+        HeavyEnemy,
+        NormalEnemy
     }
 }

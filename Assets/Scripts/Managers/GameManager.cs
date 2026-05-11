@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using Events;
 using EventSystem;
 using UnityEngine;
@@ -24,6 +25,12 @@ namespace Managers
         {
             EventBus<GameEndedEvent>.Unregister(gameEndedEvent);
             EventBus<GameStartedEvent>.Unregister(gameStartedEvent);
+        }
+
+        private async void Start()
+        {
+            await UniTask.Delay(5000);
+            EventBus<GameStartedEvent>.Raise(new GameStartedEvent());
         }
 
         private void StartGame()
