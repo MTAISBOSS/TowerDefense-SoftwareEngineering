@@ -1,7 +1,7 @@
 using System;
-using DefenseNodes;
 using Events;
 using EventSystem;
+using FlyweightEntities.DefenseNodes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;

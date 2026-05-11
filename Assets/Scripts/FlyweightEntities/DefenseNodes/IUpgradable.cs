@@ -1,4 +1,4 @@
-﻿namespace DefenseNodes
+﻿namespace FlyweightEntities.DefenseNodes
 {
     public interface IUpgradable
     {

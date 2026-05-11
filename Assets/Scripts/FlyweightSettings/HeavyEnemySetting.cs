@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FlyweightEntities;
+using UnityEngine;
 
 namespace FlyweightSettings
 {
@@ -13,7 +14,7 @@ namespace FlyweightSettings
             go.SetActive(false);
             go.name = prefab.name;
 
-            var flyweight = go.AddComponent<Entities.HeavyEnemy>();
+            var flyweight = go.AddComponent<HeavyEnemy>();
             flyweight.settings = this;
             return flyweight;
         }
