@@ -1,10 +1,9 @@
-﻿using System;
-using Entity.Movement;
+﻿using Entity.Movement;
 using Flyweight;
 using FlyweightSettings;
 using UnityEngine;
 
-namespace Entities
+namespace FlyweightEntities
 {
     public class FastEnemy : Flyweight.Flyweight , IMovable
     {

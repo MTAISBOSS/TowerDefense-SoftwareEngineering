@@ -1,6 +1,6 @@
 ﻿using FlyweightSettings;
 
-namespace Entities
+namespace FlyweightEntities
 {
     public class Projectile : Flyweight.Flyweight
     {
