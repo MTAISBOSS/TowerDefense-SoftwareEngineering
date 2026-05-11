@@ -2,8 +2,8 @@
 
 namespace FlyweightSettings
 {
-    [CreateAssetMenu(menuName = "Flyweight/Enemy Setting")]
-    public class EnemySetting : Flyweight.FlyweightSettings
+    [CreateAssetMenu(menuName = "Flyweight/Enemy/Heavy Enemy Setting")]
+    public class HeavyEnemySetting : Flyweight.FlyweightSettings
     {
         public float damage;
         public float healthPoint;
@@ -13,7 +13,7 @@ namespace FlyweightSettings
             go.SetActive(false);
             go.name = prefab.name;
 
-            var flyweight = go.AddComponent<Entities.Enemy>();
+            var flyweight = go.AddComponent<Entities.HeavyEnemy>();
             flyweight.settings = this;
             return flyweight;
         }

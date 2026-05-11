@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 973e420d72764bd2a497dbbe35464e24, type: 3}
-  m_Name: Enemy Setting
+  m_Name: Enemy Normal Setting
   m_EditorClassIdentifier: Assembly-CSharp::FlyweightSettings.EnemySetting
-  type: 1
-  prefab: {fileID: 294866130404600675, guid: 3bb3f713cd0150a458e1856476cad2ff, type: 3}
+  type: 3
+  prefab: {fileID: 3616780812716867487, guid: fc400e2459dddd943bc54de2d3d7afae, type: 3}
   damage: 20
   healthPoint: 100
