@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyweightSettings.EnemySettings
   type: 0
   prefab: {fileID: 8312854940140943192, guid: 51b48fbb89b1a30448be1a82aa331100, type: 3}
-  healthPoint: 100
+  healthPoint: 20
   damage: 10
-  moveSpeed: 5
+  moveSpeed: 15
   goldReward: 10
