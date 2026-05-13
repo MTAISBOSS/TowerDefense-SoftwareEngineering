@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyweightSettings.EnemySetting
   type: 3
   prefab: {fileID: 3616780812716867487, guid: fc400e2459dddd943bc54de2d3d7afae, type: 3}
-  damage: 20
+  damage: 5
   healthPoint: 100

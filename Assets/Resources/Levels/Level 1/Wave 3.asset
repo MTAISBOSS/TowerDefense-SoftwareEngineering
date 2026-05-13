@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0373f183f445dc83bd57de585d723c, type: 3}
   m_Name: Wave 3
   m_EditorClassIdentifier: Assembly-CSharp::WaveSystem.SubWaveConfig
-  setting: {fileID: 11400000, guid: bc3d45f60b60e5f479c935d1d0b1a919, type: 2}
-  spawnCooldown: 2
-  totalNumberOfEntities: 20
+  setting: {fileID: 11400000, guid: 0024538936f73954883bddacc1b9ae16, type: 2}
+  spawnCooldown: 5
+  totalNumberOfEntities: 10
