@@ -3,29 +3,31 @@ using UnityEngine;
 
 namespace Health
 {
-    public class Health : MonoBehaviour , IDamage
+    public class Health : MonoBehaviour, IDamage
     {
         [Header("Health Settings")]
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float currentHealth = 100f;
 
         public event Action<float, float> OnHealthChanged;
+        public event Action OnDeath;
 
         public void TakeDamage(float amount)
         {
-            if (amount <= 0f)
-                return;
-
+            if (IsDead()) return;
             currentHealth = Mathf.Clamp(currentHealth - amount, 0f, maxHealth);
-
             NotifyHealthChanged();
+
+            if (IsDead())
+            {
+                Die();
+            }
         }
+
         public void ResetHealth(float value)
         {
             maxHealth = Mathf.Max(1f, value);
-
             currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
             NotifyHealthChanged();
         }
 
@@ -39,7 +41,7 @@ namespace Health
             return maxHealth;
         }
 
-        public bool IsDead()
+        private bool IsDead()
         {
             return currentHealth <= 0f;
         }
@@ -47,6 +49,11 @@ namespace Health
         private void NotifyHealthChanged()
         {
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        }
+
+        private void Die()
+        {
+            OnDeath?.Invoke();
         }
     }
 }

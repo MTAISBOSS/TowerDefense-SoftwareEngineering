@@ -10,15 +10,9 @@ namespace FlyweightSettings
         public float damage;
         public float despawnTimeInSeconds;
 
-        public override Flyweight.Flyweight Create()
+        public override Flyweight.Flyweight Create<T>()
         {
-            var go = Instantiate(prefab);
-            go.SetActive(false);
-            go.name = prefab.name;
-
-            var flyweight = go.AddComponent<Projectile>();
-            flyweight.settings = this;
-            return flyweight;
+            return base.Create<Projectile>();
         }
     }
 }
