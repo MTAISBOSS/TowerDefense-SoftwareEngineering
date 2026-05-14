@@ -10,7 +10,6 @@ public class PlayerTestHUD : MonoBehaviour
 
     [Header("Test Settings")]
     [SerializeField] private float damageAmount = 10f;
-    [SerializeField] private float healAmount = 10f;
 
     private void Awake()
     {
@@ -25,8 +24,6 @@ public class PlayerTestHUD : MonoBehaviour
 
     private void Start()
     {
-        health.Initialize();
-
         healthBarUI.UpdateHealthBar(
             health.GetHealth(),
             health.GetMaxHealth()
@@ -35,19 +32,19 @@ public class PlayerTestHUD : MonoBehaviour
 
     private void Update()
     {
+        if (Keyboard.current == null)
+            return;
+
+        // Damage
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             health.TakeDamage(damageAmount);
         }
 
-        if (Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            health.Heal(healAmount);
-        }
-
+        // Reset health to max
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            health.ResetHealth();
+            health.ResetHealth(health.GetMaxHealth());
         }
     }
 
