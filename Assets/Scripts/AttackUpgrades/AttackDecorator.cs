@@ -1,5 +1,6 @@
 ﻿using AttackStrategies;
 using Health;
+using UnityEngine;
 
 namespace AttackUpgrades
 {
@@ -13,9 +14,9 @@ namespace AttackUpgrades
         {
             Wrapped = wrapped;
         }
-        public virtual void Attack(IDamage target)
+        public virtual void Attack(IDamage target , Vector2 firePoint)
         {
-            Wrapped.Attack(target);
+            Wrapped.Attack(target , firePoint);
         }
     }
 }

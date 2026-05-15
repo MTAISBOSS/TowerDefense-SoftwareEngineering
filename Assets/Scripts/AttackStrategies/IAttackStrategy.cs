@@ -1,4 +1,5 @@
 ﻿using Health;
+using UnityEngine;
 
 namespace AttackStrategies
 {
@@ -7,7 +8,7 @@ namespace AttackStrategies
         float Damage { get; }
         float FireRate { get; }
 
-        void Attack(IDamage target);
+        void Attack(IDamage target , Vector2 firePoint);
     }
 }
 

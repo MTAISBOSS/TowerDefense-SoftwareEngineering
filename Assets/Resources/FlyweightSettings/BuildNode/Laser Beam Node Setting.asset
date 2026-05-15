@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Laser Beam Node Setting
   m_EditorClassIdentifier: 
   type: 0
-  prefab: {fileID: 6971635679334105373, guid: 376dabbccfc571c46ad8ad6c11b5fc7f, type: 3}
-  damage: 20
+  prefab: {fileID: 4345090640640444495, guid: 45c618794b7463848a4361428198fc56, type: 3}
+  projectileSetting: {fileID: 11400000, guid: cfb4cb04e8109ab4e8173de54aaee876, type: 2}
+  upgradeRate: 0.5

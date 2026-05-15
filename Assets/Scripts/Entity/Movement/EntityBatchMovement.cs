@@ -59,6 +59,11 @@ namespace Entity.Movement
             CheckWayPointReached();
         }
 
+        public List<Transform> GetEntityTransforms()
+        {
+            return entityTransforms;
+        }
+
         private void InitializeArrays()
         {
             if (movableEntitiesToBeAdded.Count == 0) return;

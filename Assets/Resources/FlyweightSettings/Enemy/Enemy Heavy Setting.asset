@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973e420d72764bd2a497dbbe35464e24, type: 3}
   m_Name: Enemy Heavy Setting
   m_EditorClassIdentifier: Assembly-CSharp::FlyweightSettings.EnemySetting
-  type: 2
+  type: 3
   prefab: {fileID: 7314716978372206554, guid: 6dfebee71c4f81f4b87d20d89606d550, type: 3}
   damage: 20
   healthPoint: 100

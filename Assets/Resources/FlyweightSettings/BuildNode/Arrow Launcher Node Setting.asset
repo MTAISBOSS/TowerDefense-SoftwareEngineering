@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Arrow Launcher Node Setting
   m_EditorClassIdentifier: 
   type: 0
-  prefab: {fileID: 8887045093710827043, guid: 6a24fedab7ba14e46b170ea6bfe8635f, type: 3}
-  damage: 10
+  prefab: {fileID: 2125324509057126951, guid: ec1504f15f18897498dffa2ea92e7df5, type: 3}
+  projectileSetting: {fileID: 11400000, guid: d21c9005ef046444eacd4353cc75369b, type: 2}
+  upgradeRate: 0.2
