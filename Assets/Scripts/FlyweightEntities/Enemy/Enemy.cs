@@ -27,6 +27,7 @@ namespace FlyweightEntities.Enemy
         private void OnDisable()
         {
             movementRegistry.UnRegister(this);
+            health.OnDeath -= OnDeath;
         }
 
         public void Stop()
@@ -39,7 +40,7 @@ namespace FlyweightEntities.Enemy
             return transform;
         }
 
-        public virtual void OnDeath()
+        protected virtual void OnDeath()
         {
             var effect = Instantiate(settings.deathEffect, transform.position, Quaternion.identity);
             Destroy(effect , settings.deathEffectDuration);

@@ -6,7 +6,7 @@ namespace Health
     public class Health : MonoBehaviour, IDamage
     {
         [Header("Health Settings")]
-        [SerializeField] private float maxHealth = 100f;
+        [SerializeField] private float maxHealth = 100f; 
         [SerializeField] private float currentHealth = 100f;
 
         public event Action<float, float> OnHealthChanged;
