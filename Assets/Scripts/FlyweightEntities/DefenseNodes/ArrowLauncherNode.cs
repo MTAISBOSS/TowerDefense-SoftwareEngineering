@@ -1,5 +1,4 @@
-﻿using FlyweightSettings;
-using FlyweightSettings.Tower;
+﻿using FlyweightSettings.Tower;
 
 namespace FlyweightEntities.DefenseNodes
 {
