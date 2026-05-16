@@ -8,11 +8,6 @@ namespace FlyweightEntities.DefenseNodes
     {
         private new FireOrbLauncherNodeSetting settings => (FireOrbLauncherNodeSetting)base.settings;
 
-        private void Awake()
-        {
-            AttackStrategy = new ProjectileAttackStrategy(settings.projectileSetting);
-        }
-
         public void Upgrade()
         {
             AttackStrategy = new FireRateUpgrade(AttackStrategy, AttackStrategy.FireRate * settings.upgradeRate);

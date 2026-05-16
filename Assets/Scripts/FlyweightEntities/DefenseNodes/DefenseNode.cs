@@ -1,14 +1,21 @@
 ﻿using AttackStrategies;
 using Entity.Movement;
+using FlyweightSettings.Tower;
 using Health;
 using UnityEngine;
 
 namespace FlyweightEntities.DefenseNodes
 {
-    public abstract class DefenseNode : Flyweight.Flyweight
+    public abstract class  DefenseNode : Flyweight.Flyweight
     {
         public float coolDownTimer = 0f;
         protected IAttackStrategy AttackStrategy;
+        
+        private void Awake()
+        {
+            var luncherNodeSetting = (LauncherNodeSetting)settings;
+            AttackStrategy = new ProjectileAttackStrategy(luncherNodeSetting.projectileSetting);
+        }
         
         private void Update()
         {

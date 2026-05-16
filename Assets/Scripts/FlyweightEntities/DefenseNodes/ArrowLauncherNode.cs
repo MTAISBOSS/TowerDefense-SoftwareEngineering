@@ -7,11 +7,6 @@ namespace FlyweightEntities.DefenseNodes
     public class ArrowLauncherNode : DefenseNode,IUpgradable
     {
         private new ArrowLauncherNodeSetting settings => (ArrowLauncherNodeSetting)base.settings;
-        
-        private void Awake()
-        {
-            AttackStrategy = new ProjectileAttackStrategy(settings.projectileSetting);
-        }
 
         public void Upgrade()
         {

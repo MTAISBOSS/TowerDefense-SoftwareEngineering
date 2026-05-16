@@ -7,10 +7,8 @@ namespace FlyweightSettings.Tower
     namespace FlyweightSettings
     {
         [CreateAssetMenu(menuName = "Flyweight/Tower/LaserBeam Setting")]
-        public class LaserBeamNodeSetting : Flyweight.FlyweightSettings
+        public class LaserBeamNodeSetting : LauncherNodeSetting
         {
-            public ProjectileSetting projectileSetting;
-            public float upgradeRate;
             public override Flyweight.Flyweight Create<T>()
             {
                 return base.Create<LaserBeamNode>();
