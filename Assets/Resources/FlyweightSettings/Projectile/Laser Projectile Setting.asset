@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbaf8881e1e54288bb7f82d48f32a42d, type: 3}
+  m_Name: Laser Projectile Setting
+  m_EditorClassIdentifier: 
+  type: 3
+  prefab: {fileID: 6971635679334105373, guid: 376dabbccfc571c46ad8ad6c11b5fc7f, type: 3}
+  speed: 7
+  damage: 20
+  despawnTimeInSeconds: 2

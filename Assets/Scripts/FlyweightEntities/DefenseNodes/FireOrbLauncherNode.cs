@@ -1,4 +1,6 @@
-﻿using FlyweightSettings.FlyweightSettings;
+﻿using AttackStrategies;
+using AttackUpgrades;
+using FlyweightSettings.Tower.FlyweightSettings;
 
 namespace FlyweightEntities.DefenseNodes
 {
@@ -8,6 +10,7 @@ namespace FlyweightEntities.DefenseNodes
 
         public void Upgrade()
         {
+            AttackStrategy = new FireRateUpgrade(AttackStrategy, AttackStrategy.FireRate * settings.upgradeRate);
         }
     }
 }

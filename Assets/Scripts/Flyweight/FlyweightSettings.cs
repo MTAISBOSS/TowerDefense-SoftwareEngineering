@@ -8,13 +8,13 @@ namespace Flyweight
         public FlyweightType type;
         public GameObject prefab;
 
-        public virtual Flyweight Create()
+        public virtual Flyweight Create<T>() where T : Flyweight
         {
             var go = Instantiate(prefab);
             go.SetActive(false);
             go.name = prefab.name;
 
-            var flyweight = go.AddComponent<Flyweight>();
+            var flyweight = go.AddComponent<T>();
             flyweight.settings = this;
             return flyweight;
         }
