@@ -24,7 +24,9 @@ namespace Unit
         public DefenseNode CreateNode(DefenseNodeType nodeType,Transform parent)
         {
             NodeRelation nodeRelation = nodeRelations.FirstOrDefault(o => o.nodeType == nodeType);
-            var node =Instantiate(nodeRelation.nodePrefab, parent, true);
+            var node = Instantiate(nodeRelation.nodePrefab, parent, true);
+            node.transform.localPosition = Vector3.zero;
+            node.transform.localScale = Vector3.one;
             return node;
         }
     }

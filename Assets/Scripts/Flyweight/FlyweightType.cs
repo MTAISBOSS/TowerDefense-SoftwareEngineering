@@ -2,7 +2,10 @@
 {
     public enum FlyweightType
     {
-        Projectile,
+        Tower,
+        FireProjectile,
+        ArrowProjectile,
+        LaserProjectile,
         FastEnemy,
         HeavyEnemy,
         NormalEnemy

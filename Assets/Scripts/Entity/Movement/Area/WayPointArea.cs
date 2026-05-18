@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Logger = Utilities.Logger;
 
 namespace Entity.Movement.Area
 {
     public class WayPointArea : MonoBehaviour
     {
         [SerializeField] private bool isLoop = true;
-        private readonly List<Vector3> _wayPoints = new();
+        private readonly List<WayPoint> _wayPoints = new();
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -14,8 +15,8 @@ namespace Entity.Movement.Area
             SetupPoints();
             for (int i = 0; i < _wayPoints.Count; i++)
             {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(_wayPoints[i], 0.1f);
+                Gizmos.color = (_wayPoints[i].IsFlipped()) ? Color.red : Color.blue;
+                Gizmos.DrawSphere(_wayPoints[i].GetPosition(), 0.1f);
                 
                 var nextIndex = i + 1;
                 if (nextIndex == _wayPoints.Count)
@@ -23,10 +24,11 @@ namespace Entity.Movement.Area
                     if (!isLoop) return;
                     nextIndex = 0;
                 }
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(_wayPoints[i % _wayPoints.Count], _wayPoints[nextIndex % _wayPoints.Count]);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(_wayPoints[i % _wayPoints.Count].GetPosition() , _wayPoints[nextIndex % _wayPoints.Count].GetPosition());
             }
         }
+
 #endif
 
         private void Awake()
@@ -34,24 +36,40 @@ namespace Entity.Movement.Area
             SetupPoints();
         }
 
-        public Vector2 GetPoint(int index)
+        public int GetWayPointCount()
         {
-            if (!isLoop && index == _wayPoints.Count)
+            return _wayPoints.Count;
+        }
+
+        public Vector2 GetPointPosition(int index)
+        {
+            if (!isLoop && index >= _wayPoints.Count)
             {
                 return UnInitializedVector2.Value;
             }
             
-            var point = _wayPoints[index % _wayPoints.Count];
-            return point;
+            var point = GetPoint(index);
+            return point.GetPosition();
+        }
+
+        public bool IsWayPointFlipped(int index)
+        {
+            var point = GetPoint(index);
+            return point.IsFlipped();
+        }
+
+        private WayPoint GetPoint(int index)
+        {
+            return _wayPoints[index % _wayPoints.Count];
         }
 
         private void SetupPoints()
         {
             _wayPoints.Clear();
-            foreach (var wayPointTransform in GetComponentsInChildren<Transform>())
+            var wayPoints = GetComponentsInChildren<WayPoint>();
+            foreach (var wayPoint in wayPoints)
             {
-                if (wayPointTransform == transform) continue;
-                _wayPoints.Add(wayPointTransform.position);
+                _wayPoints.Add(wayPoint);
             }
         }
     }

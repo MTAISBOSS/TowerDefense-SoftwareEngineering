@@ -11,6 +11,6 @@ namespace AttackUpgrades
             this.extraFireRate = extraFireRate;
         }
 
-        public override float FireRate => Wrapped.FireRate + FireRate;
+        public override float FireRate => Wrapped.FireRate + this.extraFireRate;
     }
 }

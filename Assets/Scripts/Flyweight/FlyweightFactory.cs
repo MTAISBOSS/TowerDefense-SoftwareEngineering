@@ -34,7 +34,7 @@ namespace Flyweight
             }
 
             pool = new ObjectPool<Flyweight>(
-                settings.Create,
+                settings.Create<Flyweight>,
                 settings.OnGet,
                 settings.OnRelease,
                 settings.OnDestroyPoolObject,
