@@ -23,7 +23,7 @@ namespace AttackStrategies
             Damage = _projectileSetting.damage;
         }
         
-        public void Attack(IDamage target , Vector2 firePoint)
+        public void Attack(IDamagable target , Vector2 firePoint)
         {
             var flyweight = FlyweightFactory.Spawn(_projectileSetting);
             var projectile = flyweight.GetComponent<IProjectile>();

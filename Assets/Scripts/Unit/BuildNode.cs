@@ -33,6 +33,11 @@ namespace Unit
 
         private void Update()
         {
+            HandleSelection();
+        }
+
+        private void HandleSelection()
+        {
             if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -40,7 +45,7 @@ namespace Unit
                 {
                     Vector2 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
                     RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
-        
+
                     if (hit.collider != null && hit.collider.gameObject == gameObject)
                     {
                         EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent() { node = this });
@@ -48,6 +53,7 @@ namespace Unit
                 }
             }
         }
+
         public void Select()
         {
             _isSelected = true;

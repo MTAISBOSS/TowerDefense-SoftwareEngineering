@@ -1,6 +1,6 @@
 ﻿namespace Health
 {
-    public interface IDamage
+    public interface IDamagable
     {
         void TakeDamage(float damage);
     }

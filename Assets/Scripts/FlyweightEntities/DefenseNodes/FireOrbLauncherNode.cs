@@ -10,7 +10,7 @@ namespace FlyweightEntities.DefenseNodes
 
         public void Upgrade()
         {
-            AttackStrategy = new FireRateUpgrade(AttackStrategy, AttackStrategy.FireRate * settings.upgradeRate);
+            attackStrategy = new FireRateUpgrade(attackStrategy, attackStrategy.FireRate * settings.upgradeRate);
         }
     }
 }

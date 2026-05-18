@@ -8,7 +8,7 @@ namespace AttackStrategies
         float Damage { get; }
         float FireRate { get; }
 
-        void Attack(IDamage target , Vector2 firePoint);
+        void Attack(IDamagable target , Vector2 firePoint);
     }
 }
 

@@ -14,7 +14,7 @@ namespace AttackUpgrades
         {
             Wrapped = wrapped;
         }
-        public virtual void Attack(IDamage target , Vector2 firePoint)
+        public virtual void Attack(IDamagable target , Vector2 firePoint)
         {
             Wrapped.Attack(target , firePoint);
         }

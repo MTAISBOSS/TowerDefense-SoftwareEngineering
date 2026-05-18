@@ -1,53 +1,44 @@
 ﻿using AttackStrategies;
-using Entity.Movement;
 using FlyweightSettings.Tower;
 using Health;
 using UnityEngine;
 
 namespace FlyweightEntities.DefenseNodes
 {
-    public abstract class  DefenseNode : Flyweight.Flyweight
+    public abstract class DefenseNode : Flyweight.Flyweight
     {
         public float coolDownTimer = 0f;
-        protected IAttackStrategy AttackStrategy;
-        
+        protected IAttackStrategy attackStrategy;
+
         private void Awake()
         {
-            var luncherNodeSetting = (LauncherNodeSetting)settings;
-            AttackStrategy = new ProjectileAttackStrategy(luncherNodeSetting.projectileSetting);
+            var launcherNodeSetting = (LauncherNodeSetting)settings;
+            attackStrategy = new ProjectileAttackStrategy(launcherNodeSetting.projectileSetting);
         }
-        
+
         private void Update()
         {
-            if(AttackStrategy == null) return;
-            var target = FindTarget();
-            if (target == null) return;
+            if (attackStrategy == null) return;
+            
+            var target = ClosestDamagableFinder.GetClosestDamagable(transform);
+            
+            if (target != null)
+                HandleCooldown(target);
+        }
+
+        private void HandleCooldown(IDamagable target)
+        {
             coolDownTimer += Time.deltaTime;
-            if (coolDownTimer >= 1f / AttackStrategy.FireRate)
+            if (coolDownTimer >= 1f / attackStrategy.FireRate)
             {
-                AttackStrategy.Attack(target , transform.position);
+                HandleOnCooldownStart(target);
                 coolDownTimer = 0f;
             }
         }
 
-        public virtual IDamage FindTarget()
+        private void HandleOnCooldownStart(IDamagable target)
         {
-            var entities = EntityBatchMovement.instance;
-            var shortestDistance = float.MaxValue;
-            Transform targetTransform = null;
-            foreach (var entityTransform in entities.GetEntityTransforms())
-            {
-                var distance = Vector2.Distance(entityTransform.position, transform.position);
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-                    targetTransform = entityTransform;
-                }
-            }
-
-            var damageableTarget =
-                (targetTransform != null) ? targetTransform.GetComponent<IDamage>() : null;
-            return damageableTarget;
+            attackStrategy.Attack(target, transform.position);
         }
     }
 }
