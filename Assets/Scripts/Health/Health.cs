@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Health
 {
-    public class Health : MonoBehaviour, IDamage
+    public class Health : MonoBehaviour, IDamagable
     {
         [Header("Health Settings")]
         [SerializeField] private float maxHealth = 100f; 

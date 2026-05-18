@@ -4,6 +4,6 @@ namespace FlyweightEntities.Projectiles
 {
     public interface IProjectile
     {
-        public void Initialize(IDamage moveTarget);
+        public void Initialize(IDamagable moveTarget);
     }
 }

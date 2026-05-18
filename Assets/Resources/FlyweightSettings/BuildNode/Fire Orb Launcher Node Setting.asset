@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9273488adff4416fa2f5f6471e3008c6, type: 3}
   m_Name: Fire Orb Launcher Node Setting
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   prefab: {fileID: 8625640426741893327, guid: 09f9c1e7a8fee7243a15524493d00a8b, type: 3}
   projectileSetting: {fileID: 11400000, guid: 7b8abfd61a0c0c747806105039fb3348, type: 2}
   upgradeRate: 0.3

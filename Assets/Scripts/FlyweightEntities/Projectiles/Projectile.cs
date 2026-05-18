@@ -1,41 +1,32 @@
-﻿using Flyweight;
+﻿using System;
+using Flyweight;
 using FlyweightSettings.Projectiles;
 using Health;
 using UnityEngine;
 
 namespace FlyweightEntities.Projectiles
 {
-    public class Projectile<T> : Flyweight.Flyweight , IProjectile where T : ProjectileSetting
+    public class Projectile<T> : Flyweight.Flyweight, IProjectile where T : ProjectileSetting
     {
-        private new T settings => (T)base.settings;
-        private IDamage target;
+        protected T Settings => (T)settings;
+        private IDamagable damagable;
         private Transform targetTransform;
 
-        public void Initialize(IDamage moveTarget)
+        protected Transform GetTargetTransform() => targetTransform;
+        protected IDamagable GetDamagable() => damagable;
+        public void Initialize(IDamagable moveTarget)
         {
-            target = moveTarget;
-            targetTransform = ((MonoBehaviour)target).transform;
+            damagable = moveTarget;
+            targetTransform = ((MonoBehaviour)damagable).transform;
         }
-
-        private void Update()
+        protected virtual void Update()
         {
-            if (target == null)
+            if (damagable == null)
             {
-                Release();
-                return;
-            }
-
-            transform.position = Vector2.MoveTowards(transform.position,
-                targetTransform.position, settings.speed * Time.deltaTime);
-
-            if (Vector2.Distance(transform.position, targetTransform.position) < 0.1)
-            {
-                target.TakeDamage(settings.damage);
                 Release();
             }
         }
-
-        private void Release()
+        protected void Release()
         {
             FlyweightFactory.ReturnToPool(this);
         }
